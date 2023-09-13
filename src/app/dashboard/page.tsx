@@ -1,6 +1,11 @@
 import { authOptions } from "../api/auth/[...nextauth]/route"
 import { getServerSession } from "next-auth"
 
+import Stripe from 'stripe';
+
+export const stripe = new Stripe(String(process.env.STRIPE_SECRET), {
+    apiVersion: '2023-08-16'
+});
 
 
 export default async function Page() {
