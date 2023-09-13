@@ -29,8 +29,9 @@ export async function hasSubscription() {
 
 export async function createCheckoutLink(customer: string) {
     const checkout = await stripe.checkout.sessions.create({
-        success_url: "http://localhost:3000/dashboard/billing?success=true",
-        cancel_url: "http://localhost:3000/dashboard/billing?success=true",
+        //for production, change localhost to use production domain instead
+        success_url: "http://localhost:3000/dashboard&success=true",
+        cancel_url: "http://localhost:3000/dashboard&success=true",
         customer: customer,
         line_items: [
             {
@@ -49,16 +50,6 @@ export async function createCustomerIfNull() {
     if (session) {
         const user = await prisma.user.findFirst({ where: { email: session.user?.email } });
 
-        if (!user?.api_key) {
-            await prisma.user.update({
-                where: {
-                    id: user?.id
-                },
-                data: {
-                    api_key: "secret_" + randomUUID()
-                }
-            })
-        }
         if (!user?.stripe_customer_id) {
             const customer = await stripe.customers.create({
                 email: String(user?.email)
