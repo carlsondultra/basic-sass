@@ -1,4 +1,4 @@
-import { createCustomerIfNull, generateCustomerPortalLink } from "@/helpers/billing";
+import { createCustomerIfNull, generateCustomerPortalLink, hasSubscription } from "@/helpers/billing";
 import { authOptions } from "../api/auth/[...nextauth]/route"
 import { getServerSession } from "next-auth"
 
@@ -20,22 +20,27 @@ export default async function Page() {
 
     //pull entire user model from database based on current logged in email
     const user = await prisma.user.findFirst({
-        where:{
+        where: {
             email: session?.user?.email
         }
     })
 
     //create customer portal link based on the above user
-    const manage_link = await generateCustomerPortalLink(""+user?.stripe_customer_id)
+    const manage_link = await generateCustomerPortalLink("" + user?.stripe_customer_id)
+
+    const hasSub = await hasSubscription();
 
     return (
         <div className="max-w-4xl m-auto w-full px-4">
             <div className="flex flex-col">
                 <p className="text-2xl font-medium">Welcome, {session?.user?.name}</p>
                 <div className="">
-                    <Link href={""+manage_link}>
+                    <Link href={"" + manage_link}>
                         Manage billing
                     </Link>
+                </div>
+                <div className="">
+                    {hasSub ? <div className=""> YES </div> :<div className="">NO</div>}
                 </div>
             </div>
         </div>
