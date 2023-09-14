@@ -36,19 +36,40 @@ export default async function Page() {
             <div className="flex flex-col">
                 <p className="text-2xl font-medium">Welcome, {session?.user?.name}</p>
                 <div className="py-4">
-                    <Link  className="bg-black ml-auto text-white rounded-md px-2 py-1" href={"" + manage_link}>
+                    <Link className="bg-black ml-auto text-white rounded-md px-2 py-1" href={"" + manage_link}>
                         Manage billing
                     </Link>
                 </div>
+
                 <div className="">
-                    {hasSub ? <div className="p-6 rounded-md border-emerald-400 border shadow-sm font-medium">
-                        Subscribed
-                    </div> :
+                    {hasSub ? (
+                        <div className="p-6 rounded-md border-emerald-400 border shadow-sm font-medium">
+                            Subscribed
+                        </div>
+                    ) : (
                         <div className="p-6 rounded-md border-zinc-400 border shadow-sm font-medium flex items-center gap-2">
                             Free Plan
-                            <Link className="bg-black ml-auto text-white rounded-md px-2 py-1" href={"" + checkout_link}>Upgrade</Link>
-                        </div>}
+                            <Link
+                                className="bg-black ml-auto text-white rounded-md px-2 py-1"
+                                href={"" + checkout_link}
+                            >
+                                Upgrade
+                            </Link>
+                        </div>
+                    )}
                 </div>
+
+                {/* Displaying cat image if user is subscribed */}
+                <div className="pb-6">
+                    {hasSub ? (
+                        <img src="/cat.jpg" className="rounded-xl max-w-lg"/>
+                    ) : (
+                        <div className="p-6 rounded-md border-zinc-400 border shadow-sm font-medium flex items-center gap-2">
+                            You don't have access to the cat image!
+                        </div>
+                    )}
+                </div>
+
             </div>
         </div>
     )
