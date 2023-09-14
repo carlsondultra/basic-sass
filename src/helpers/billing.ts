@@ -35,7 +35,8 @@ export async function createCheckoutLink(customer: string) {
         customer: customer,
         line_items: [
             {
-                price: 'price_1NarR3APMZcBliJSoefCKTi5'
+                price: 'price_1Nq3ADF20JF39MQTaqiOzthp',
+                quantity: 1
             }
         ],
         mode: "subscription"
