@@ -44,6 +44,24 @@ export async function createCheckoutLink(customer: string) {
     return checkout.url;
 }
 
+// Generate Customer portal
+export async function generateCustomerPortalLink(customerId: string) {
+    try {
+        
+        const portalSession = await stripe.billingPortal.sessions.create({
+            customer: customerId,
+            return_url: process.env.NEXTAUTH_URL + "/dashboard", 
+        });
+
+        console.log()
+
+        return portalSession.url;
+    } catch (error) {
+        console.log(error)
+        return undefined;
+    }
+}
+
 export async function createCustomerIfNull() {
     const session = await getServerSession(authOptions);
 
